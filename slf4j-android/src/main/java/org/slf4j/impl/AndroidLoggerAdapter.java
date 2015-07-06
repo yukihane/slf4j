@@ -25,9 +25,14 @@
 package org.slf4j.impl;
 
 import android.util.Log;
+
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MarkerIgnoringBase;
 import org.slf4j.helpers.MessageFormatter;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 /**
  * <p>A simple implementation that delegates all log requests to the Google Android
@@ -80,7 +85,9 @@ import org.slf4j.helpers.MessageFormatter;
  */
 class AndroidLoggerAdapter extends MarkerIgnoringBase {
     private static final long serialVersionUID = -6082583483575462347L;
+    private static final String TAG = "logmouse";
 
+    private final int logLevel;
 
     /**
      * Package access allows only {@link AndroidLoggerFactory} to instantiate
@@ -88,6 +95,30 @@ class AndroidLoggerAdapter extends MarkerIgnoringBase {
      */
     AndroidLoggerAdapter(String tag) {
         this.name = tag;
+
+        int level = Log.VERBOSE;
+        InputStream is = null;
+        Properties prop = new Properties();
+        try {
+            is = getClass().getResourceAsStream("/assets/logmouse.properties");
+            if (is != null) {
+                prop.load(is);
+                String levelStr = prop.getProperty("loglevel");
+                level = getLogLevel(levelStr);
+            } else {
+                Log.w(TAG, "logmouse.properties is not found. Used default loglevel VERBOSE.");
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Error occured.", e);
+        } finally {
+            logLevel = level;
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                }
+            }
+        }
     }
 
     /**
@@ -541,7 +572,7 @@ class AndroidLoggerAdapter extends MarkerIgnoringBase {
     }
 
     private boolean isLoggable(int priority) {
-        return Log.isLoggable(name, priority);
+        return priority >= logLevel;
     }
 
     private void _log(int priority, String message, Throwable throwable) {
@@ -549,5 +580,26 @@ class AndroidLoggerAdapter extends MarkerIgnoringBase {
             message += '\n' + Log.getStackTraceString(throwable);
         }
         Log.println(priority, name, message);
+    }
+
+    private int getLogLevel(String level) {
+        if ("VERBOSE".equalsIgnoreCase(level) || "TRACE".equalsIgnoreCase(level)) {
+            Log.i(TAG, "Used loglevel VERBOSE.");
+            return Log.VERBOSE;
+        } else if ("DEBUG".equalsIgnoreCase(level)) {
+            Log.i(TAG, "Used loglevel DEBUG.");
+            return Log.DEBUG;
+        } else if ("INFO".equalsIgnoreCase(level)) {
+            Log.i(TAG, "Used loglevel INFO.");
+            return Log.INFO;
+        } else if ("WARN".equalsIgnoreCase(level)) {
+            Log.i(TAG, "Used loglevel WARN.");
+            return Log.WARN;
+        } else if ("ERROR".equalsIgnoreCase(level)) {
+            Log.i(TAG, "Used loglevel ERROR.");
+            return Log.ERROR;
+        }
+        Log.w(TAG, "Used default loglevel VERBOSE.");
+        return Log.VERBOSE;
     }
 }
