@@ -10,11 +10,12 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>slf4j-android</artifactId>
+    <groupId>com.github.yukihane.slf4j</groupId>
+    <artifactId>logmouse</artifactId>
     <packaging>jar</packaging>
     <name>SLF4J Android Binding</name>
     <description>SLF4J Android Binding</description>
-    <url>http://www.slf4j.org</url>
+    <url>https://github.com/yukihane/slf4j/</url>
 
     <dependencies>
         <dependency>
