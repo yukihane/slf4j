@@ -136,22 +136,16 @@ class AndroidLoggerAdapter extends MarkerIgnoringBase {
 
     private static int getLogLevel(String level) {
         if ("VERBOSE".equalsIgnoreCase(level) || "TRACE".equalsIgnoreCase(level)) {
-            Log.i(TAG, "Used loglevel VERBOSE.");
             return Log.VERBOSE;
         } else if ("DEBUG".equalsIgnoreCase(level)) {
-            Log.i(TAG, "Used loglevel DEBUG.");
             return Log.DEBUG;
         } else if ("INFO".equalsIgnoreCase(level)) {
-            Log.i(TAG, "Used loglevel INFO.");
             return Log.INFO;
         } else if ("WARN".equalsIgnoreCase(level)) {
-            Log.i(TAG, "Used loglevel WARN.");
             return Log.WARN;
         } else if ("ERROR".equalsIgnoreCase(level)) {
-            Log.i(TAG, "Used loglevel ERROR.");
             return Log.ERROR;
         }
-        Log.w(TAG, "Used default loglevel VERBOSE.");
         return Log.VERBOSE;
     }
 
