@@ -2,16 +2,20 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
+    <properties>
+        <slf4j.base.version>1.7.12</slf4j.base.version>
+    </properties>
     <parent>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-parent</artifactId>
-        <version>1.7.12</version>
+        <version>${slf4j.base.version}</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.yukihane.slf4j</groupId>
     <artifactId>logmouse</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>SLF4J Android Binding</name>
     <description>SLF4J Android Binding</description>
@@ -21,7 +25,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>${project.version}</version>
+            <version>${slf4j.base.version}</version>
         </dependency>
 
         <dependency>
